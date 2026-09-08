@@ -1,0 +1,30 @@
+{
+  "name": "dnd-paladin",
+  "version": "1.0.0",
+  "description": "Paladin stats viewer",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "test": "jest",
+    "test-unit": "jest ./src/*"
+  },
+  "author": "james-francis-mt",
+  "license": "ISC",
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "@swc/jest"
+    },
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.16.2",
+    "@swc/jest": "^0.2.39",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.5.1",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1"
+  }
+}
