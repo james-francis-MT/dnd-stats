@@ -1,3 +1,7 @@
+type CharacterStats = {
+  name: string;
+};
+
 export class Character {
   private name: string;
 
@@ -7,5 +11,9 @@ export class Character {
 
   toEqual(other: Character): any {
     return other.name === this.name;
+  }
+
+  stats(): CharacterStats {
+    return { name: this.name };
   }
 }
