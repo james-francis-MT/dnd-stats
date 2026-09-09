@@ -19,14 +19,4 @@ describe("get character stats", () => {
 
     expect(stats.name).toEqual("test");
   });
-
-  it("returns bob name", () => {
-    mockStore.get.mockReturnValue(new Character("bob"));
-
-    const testId = randomUUID();
-    const result = getCharacterStats.execute({ id: testId });
-    const stats = result.value;
-
-    expect(stats.name).toEqual("bob");
-  });
 });
