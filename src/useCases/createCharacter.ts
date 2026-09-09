@@ -1,11 +1,7 @@
 import { UUID } from "crypto";
 import { Character } from "../domain/character";
 import { CharacterStore } from "../gateways/characterStore/characterStore";
-
-type Result<T> = {
-  success: boolean;
-  value: T;
-};
+import { Result } from "../utils/result";
 
 export class CreateCharacter {
   constructor(private readonly store: CharacterStore) {}

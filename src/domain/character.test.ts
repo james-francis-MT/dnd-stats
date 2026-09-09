@@ -1,12 +1,12 @@
 import { Character } from "./character";
 
 describe("character", () => {
-  describe("stats", () => {
+  describe("info", () => {
     const char = new Character("bob");
     it("returns name", () => {
-      const stats = char.stats();
+      const info = char.info();
 
-      expect(stats.name).toEqual("bob");
+      expect(info.name).toEqual("bob");
     });
   });
 });

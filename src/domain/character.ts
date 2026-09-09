@@ -1,4 +1,4 @@
-type CharacterStats = {
+type CharacterInfo = {
   name: string;
 };
 
@@ -13,7 +13,7 @@ export class Character {
     return other.name === this.name;
   }
 
-  stats(): CharacterStats {
+  info(): CharacterInfo {
     return { name: this.name };
   }
 }
