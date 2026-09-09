@@ -12,6 +12,11 @@ export class InMemoryCharacterStore implements CharacterStore {
   }
 
   get(id: string): Character {
-    return this.characters[id];
+    const character = this.characters[id];
+
+    if (!character) {
+      throw new Error(`no character with that id: ${id}`);
+    }
+    return character;
   }
 }

@@ -9,4 +9,12 @@ describe("character", () => {
       expect(info.name).toEqual("bob");
     });
   });
+
+  describe("scores", () => {
+    it("returns default stats when not set", () => {
+      const char = new Character("bob");
+
+      expect(char.scores()).toEqual({ strength: 15, dexterity: 13 });
+    });
+  });
 });
