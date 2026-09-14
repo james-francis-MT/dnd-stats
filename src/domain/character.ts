@@ -1,23 +1,25 @@
 import { AbilityScores } from "./abilityScores";
 
+const DEFAULT_SCORES: AbilityScores = {
+  strength: 15,
+  dexterity: 13,
+  constitution: 14,
+  intelligence: 10,
+  wisdom: 12,
+  charisma: 8,
+};
+
 type CharacterInfo = {
   name: string;
 };
 
-export class Character {
+export abstract class Character {
   private name: string;
-  private abilityScores: AbilityScores;
+  protected abilityScores: AbilityScores;
 
   constructor(name: string, scores?: AbilityScores) {
     this.name = name;
-    this.abilityScores = scores || {
-      strength: 15,
-      dexterity: 13,
-      constitution: 14,
-      intelligence: 10,
-      wisdom: 12,
-      charisma: 8,
-    };
+    this.abilityScores = scores || DEFAULT_SCORES;
   }
 
   toEqual(other: Character): any {
@@ -30,5 +32,21 @@ export class Character {
 
   scores(): AbilityScores {
     return this.abilityScores;
+  }
+}
+
+export class HillDwarf extends Character {
+  constructor(name: string, scores?: AbilityScores) {
+    super(name, scores);
+    this.addRaceBonus();
+  }
+
+  private addRaceBonus() {
+    this.abilityScores.constitution += 2;
+    if (this.abilityScores.constitution > 20)
+      this.abilityScores.constitution = 20;
+
+    this.abilityScores.wisdom += 1;
+    if (this.abilityScores.wisdom > 20) this.abilityScores.wisdom = 20;
   }
 }
