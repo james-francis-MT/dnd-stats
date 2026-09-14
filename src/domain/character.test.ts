@@ -14,7 +14,14 @@ describe("character", () => {
     it("returns default stats when not set", () => {
       const char = new Character("bob");
 
-      expect(char.scores()).toEqual({ strength: 15, dexterity: 13 });
+      expect(char.scores()).toEqual({
+        strength: 15,
+        dexterity: 13,
+        constitution: 14,
+        intelligence: 10,
+        wisdom: 12,
+        charisma: 8,
+      });
     });
   });
 });

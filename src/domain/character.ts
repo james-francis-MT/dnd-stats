@@ -10,7 +10,14 @@ export class Character {
 
   constructor(name: string, scores?: AbilityScores) {
     this.name = name;
-    this.abilityScores = scores || { strength: 15, dexterity: 13 };
+    this.abilityScores = scores || {
+      strength: 15,
+      dexterity: 13,
+      constitution: 14,
+      intelligence: 10,
+      wisdom: 12,
+      charisma: 8,
+    };
   }
 
   toEqual(other: Character): any {
