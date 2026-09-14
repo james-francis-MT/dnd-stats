@@ -9,13 +9,29 @@ const mockStore = {
 
 describe("get character ability scores", () => {
   const getScores = new GetCharacterScores(mockStore);
-  mockStore.get.mockReturnValue(new Character("test", { strength: 15 }));
+  mockStore.get.mockReturnValue(
+    new Character("test", {
+      strength: 1,
+      dexterity: 2,
+      constitution: 3,
+      intelligence: 4,
+      wisdom: 5,
+      charisma: 6,
+    }),
+  );
   it("returns strength", () => {
     const mockId = randomUUID();
 
     const result = getScores.execute({ id: mockId });
 
     const scores = result.value;
-    expect(scores.strength).toEqual(15);
+    expect(scores).toEqual({
+      strength: 1,
+      dexterity: 2,
+      constitution: 3,
+      intelligence: 4,
+      wisdom: 5,
+      charisma: 6,
+    });
   });
 });

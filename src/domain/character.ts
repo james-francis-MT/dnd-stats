@@ -13,7 +13,7 @@ type CharacterInfo = {
   name: string;
 };
 
-export abstract class Character {
+export class Character {
   private name: string;
   protected abilityScores: AbilityScores;
 
