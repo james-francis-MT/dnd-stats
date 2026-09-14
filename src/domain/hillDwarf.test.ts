@@ -1,4 +1,4 @@
-import { HillDwarf } from "./character";
+import { HillDwarf } from "./hillDwarf";
 
 describe("hill dwarf", () => {
   describe("info", () => {
