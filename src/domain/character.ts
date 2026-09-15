@@ -23,7 +23,9 @@ export class Character {
   }
 
   toEqual(other: Character): any {
-    return other.name === this.name;
+    return (
+      other.name === this.name && other.abilityScores === this.abilityScores
+    );
   }
 
   info(): CharacterInfo {

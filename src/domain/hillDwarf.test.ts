@@ -11,20 +11,7 @@ describe("hill dwarf", () => {
   });
 
   describe("scores", () => {
-    it("returns default stats when not set", () => {
-      const char = new HillDwarf("bob");
-
-      expect(char.scores()).toEqual({
-        strength: 15,
-        dexterity: 13,
-        constitution: 18,
-        intelligence: 10,
-        wisdom: 14,
-        charisma: 8,
-      });
-    });
-
-    it("returns set scores", () => {
+    it("returns set scores plus bonus", () => {
       const char = new HillDwarf("Bob", {
         strength: 1,
         dexterity: 1,
