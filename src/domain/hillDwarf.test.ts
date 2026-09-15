@@ -1,3 +1,4 @@
+import { AbilityScores } from "./abilityScores";
 import { HillDwarf } from "./hillDwarf";
 
 describe("hill dwarf", () => {
@@ -12,14 +13,7 @@ describe("hill dwarf", () => {
 
   describe("scores", () => {
     it("returns set scores plus bonus", () => {
-      const char = new HillDwarf("Bob", {
-        strength: 1,
-        dexterity: 1,
-        constitution: 1,
-        intelligence: 1,
-        wisdom: 1,
-        charisma: 1,
-      });
+      const char = new HillDwarf("Bob", new AbilityScores(1, 1, 1, 1, 1, 1));
 
       expect(char.scores()).toEqual({
         strength: 1,
@@ -32,23 +26,12 @@ describe("hill dwarf", () => {
     });
 
     it("cannot return over 20", () => {
-      const char = new HillDwarf("bob", {
-        strength: 15,
-        dexterity: 13,
-        constitution: 19,
-        intelligence: 10,
-        wisdom: 12,
-        charisma: 8,
-      });
+      const char = new HillDwarf(
+        "bob",
+        new AbilityScores(15, 13, 19, 10, 12, 8),
+      );
 
-      expect(char.scores()).toEqual({
-        strength: 15,
-        dexterity: 13,
-        constitution: 20,
-        intelligence: 10,
-        wisdom: 13,
-        charisma: 8,
-      });
+      expect(char.scores()).toEqual(new AbilityScores(15, 13, 20, 10, 13, 8));
     });
   });
 });

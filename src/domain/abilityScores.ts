@@ -1,26 +1,12 @@
 export class AbilityScores {
-  strength: number;
-  dexterity: number;
-  constitution: number;
-  intelligence: number;
-  wisdom: number;
-  charisma: number;
-
   constructor(
-    strength: number,
-    dexterity: number,
-    constitution: number,
-    intelligence: number,
-    wisdom: number,
-    charisma: number,
-  ) {
-    this.strength = strength;
-    this.dexterity = dexterity;
-    this.constitution = constitution;
-    this.intelligence = intelligence;
-    this.wisdom = wisdom;
-    this.charisma = charisma;
-  }
+    private strength: number,
+    private dexterity: number,
+    private constitution: number,
+    private intelligence: number,
+    private wisdom: number,
+    private charisma: number,
+  ) {}
 
   static default() {
     return new AbilityScores(15, 13, 14, 10, 12, 8);
@@ -35,5 +21,22 @@ export class AbilityScores {
       this.wisdom === other.wisdom &&
       this.charisma === other.charisma
     );
+  }
+
+  addScores(scoresToAdd: AbilityScores): AbilityScores {
+    return new AbilityScores(
+      this.calculateNewScore(this.strength, scoresToAdd.strength),
+      this.calculateNewScore(this.dexterity, scoresToAdd.dexterity),
+      this.calculateNewScore(this.constitution, scoresToAdd.constitution),
+      this.calculateNewScore(this.intelligence, scoresToAdd.intelligence),
+      this.calculateNewScore(this.wisdom, scoresToAdd.wisdom),
+      this.calculateNewScore(this.charisma, scoresToAdd.charisma),
+    );
+  }
+
+  private calculateNewScore(oldScore: number, amount: number) {
+    let newScore = (oldScore += amount);
+    if (newScore > 20) newScore = 20;
+    return newScore;
   }
 }

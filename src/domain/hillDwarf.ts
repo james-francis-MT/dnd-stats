@@ -8,11 +8,8 @@ export class HillDwarf extends Character {
   }
 
   private addRaceBonus() {
-    this.abilityScores.constitution += 2;
-    if (this.abilityScores.constitution > 20)
-      this.abilityScores.constitution = 20;
-
-    this.abilityScores.wisdom += 1;
-    if (this.abilityScores.wisdom > 20) this.abilityScores.wisdom = 20;
+    this.abilityScores = this.abilityScores.addScores(
+      new AbilityScores(0, 0, 2, 0, 1, 0),
+    );
   }
 }
