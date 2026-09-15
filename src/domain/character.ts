@@ -1,14 +1,5 @@
 import { AbilityScores } from "./abilityScores";
 
-const DEFAULT_SCORES: AbilityScores = {
-  strength: 15,
-  dexterity: 13,
-  constitution: 14,
-  intelligence: 10,
-  wisdom: 12,
-  charisma: 8,
-};
-
 type CharacterInfo = {
   name: string;
 };
@@ -19,12 +10,12 @@ export class Character {
 
   constructor(name: string, scores?: AbilityScores) {
     this.name = name;
-    this.abilityScores = scores || DEFAULT_SCORES;
+    this.abilityScores = scores || AbilityScores.default();
   }
 
-  toEqual(other: Character): any {
+  equals(other: Character): boolean {
     return (
-      other.name === this.name && other.abilityScores === this.abilityScores
+      other.name === this.name && this.abilityScores.equals(other.abilityScores)
     );
   }
 

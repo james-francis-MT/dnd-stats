@@ -10,6 +10,6 @@ describe("when a user creates their character", () => {
 
     const character = store.get(result.value.id);
 
-    expect(character.toEqual(new Character("test"))).toBe(true);
+    expect(character.equals(new Character("test"))).toBe(true);
   });
 });

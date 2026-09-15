@@ -1,3 +1,4 @@
+import { AbilityScores } from "../src/domain/abilityScores";
 import { InMemoryCharacterStore } from "../src/gateways/characterStore/inMemoryStore";
 import { CreateCharacter } from "../src/useCases/createCharacter";
 import { GetCharacterScores } from "../src/useCases/getCharacterScores";
@@ -13,13 +14,6 @@ describe("when I call retrieve ability scores with an id", () => {
 
     const scores = result.value;
 
-    expect(scores).toEqual({
-      strength: 15,
-      dexterity: 13,
-      constitution: 14,
-      intelligence: 10,
-      wisdom: 12,
-      charisma: 8,
-    });
+    expect(scores).toEqual(AbilityScores.default());
   });
 });
