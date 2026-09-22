@@ -1,19 +1,24 @@
 import { Router, Request, Response } from "express";
-import { GetCharacterInfo } from "./useCases/getCharacterInfo";
-import { InMemoryCharacterStore } from "./gateways/characterStore/inMemoryStore";
-import { CreateCharacter } from "./useCases/createCharacter";
+import { UseCases } from "./useCases";
+import path from "path";
 
-export const routes = () => {
+export const routes = (useCases: UseCases) => {
   const router = Router();
 
-  const characterStore = new InMemoryCharacterStore();
-  const createCharacter = new CreateCharacter(characterStore);
-  const getCharacterInfo = new GetCharacterInfo(characterStore);
-
   router.get("/character", (req: Request, res: Response) => {
+    const { createCharacter, getCharacterInfo, getCharacterScores } = useCases;
+
     const charId = createCharacter.execute({ name: "Bob" }).value.id;
     const characterInfo = getCharacterInfo.execute({ id: charId });
-    res.status(200).send(characterInfo.value);
+    const characterScores = getCharacterScores.execute({ id: charId });
+
+    res
+      .status(200)
+      .send({ ...characterInfo.value, scores: characterScores.value });
+  });
+
+  router.get("/", (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, "views/index.html"));
   });
 
   return router;
