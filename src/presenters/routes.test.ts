@@ -1,18 +1,23 @@
 import express, { type Express } from "express";
 import request from "supertest";
 import { routes } from "../routes";
-import { useCases } from "../useCases";
+import { useCases, UseCases } from "../useCases";
 import * as cheerio from "cheerio";
 
-let app: Express;
+describe("GET /character/:id", function () {
+  let app: Express;
+  let cases: UseCases;
 
-describe("GET /character", function () {
   beforeEach(() => {
-    app = express().use(routes(useCases()));
+    cases = useCases();
+    app = express().use(routes(cases));
   });
 
   it("responds with character info and scores", async () => {
-    const response = await request(app).get("/character");
+    const id = cases.createCharacter.execute({ name: "Bob" }).value.id;
+
+    const response = await request(app).get(`/character/${id}`);
+
     expect(response.headers["content-type"]).toMatch(/json/);
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({
@@ -30,6 +35,8 @@ describe("GET /character", function () {
 });
 
 describe("GET /", () => {
+  let app: Express;
+
   beforeEach(() => {
     app = express().use(routes(useCases()));
   });
@@ -39,5 +46,25 @@ describe("GET /", () => {
 
     const page = cheerio.load(response.text);
     expect(page("h1").text()).toEqual("My First Heading");
+  });
+});
+
+describe("POST /createCharacter", () => {
+  let app: Express;
+
+  beforeEach(() => {
+    app = express()
+      .use(express.urlencoded({ extended: true }))
+      .use(routes(useCases()));
+  });
+
+  it("creates the character and redirects to their page", async () => {
+    const response = await request(app)
+      .post("/createCharacter")
+      .type("form")
+      .send({ name: "Bob" });
+
+    expect(response.status).toEqual(302);
+    expect(response.headers.location).toMatch(/^\/character\/[0-9a-f-]{36}$/);
   });
 });
