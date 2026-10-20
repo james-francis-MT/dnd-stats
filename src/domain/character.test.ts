@@ -19,14 +19,7 @@ describe("character", () => {
     });
 
     it("returns set scores", () => {
-      const char = new Character("Bob", {
-        strength: 1,
-        dexterity: 1,
-        constitution: 1,
-        intelligence: 1,
-        wisdom: 1,
-        charisma: 1,
-      });
+      const char = new Character("Bob", new AbilityScores(1, 1, 1, 1, 1, 1));
 
       expect(char.scores()).toEqual({
         strength: 1,
