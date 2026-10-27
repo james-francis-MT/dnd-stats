@@ -1,34 +1,32 @@
-import { AbilityScores } from "./abilityScores";
 import { Character } from "./character";
 
 describe("character", () => {
   describe("info", () => {
-    const char = new Character("bob");
-    it("returns name", () => {
-      const info = char.info();
+    const char = new Character("bob", "human", "paladin", 1);
+    const sheet = char.sheet();
 
-      expect(info.name).toEqual("bob");
-    });
-  });
-
-  describe("scores", () => {
-    it("returns default stats when not set", () => {
-      const char = new Character("bob");
-
-      expect(char.scores()).toEqual(AbilityScores.default());
+    it("sheet has name", () => {
+      expect(sheet.name).toEqual("bob");
     });
 
-    it("returns set scores", () => {
-      const char = new Character("Bob", new AbilityScores(1, 1, 1, 1, 1, 1));
-
-      expect(char.scores()).toEqual({
-        strength: 1,
-        dexterity: 1,
-        constitution: 1,
-        intelligence: 1,
-        wisdom: 1,
-        charisma: 1,
-      });
+    it("sheet has species", () => {
+      expect(sheet.species).toEqual("human");
     });
   });
 });
+
+// species: "human",
+// class: "paladin",
+// level: 1,
+// abilityScores: {
+//   strength: { score: 15, modifier: 2, savingThrow: 2 },
+//   dexterity: { score: 8, modifier: -1, savingThrow: -1 },
+//   constitution: { score: 13, modifier: 1, savingThrow: 1 },
+//   intelligence: { score: 10, modifier: 0, savingThrow: 0 },
+//   wisdom: { score: 12, modifier: 1, savingThrow: 3 },
+//   charisma: { score: 14, modifier: 2, savingThrow: 4 },
+// },
+// hitpoints: 11,
+// armourClass: 9,
+// equipped: null,
+// weapons: [],
