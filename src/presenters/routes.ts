@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { UseCases } from "../useCases";
 import path from "path";
+import { UUID } from "crypto";
 
 export const routes = (useCases: UseCases) => {
   const router = Router();
@@ -28,6 +29,16 @@ export const routes = (useCases: UseCases) => {
     }).value.id;
 
     res.redirect(`/character/${charId}`);
+  });
+
+  router.get("/character/:id", (req: Request, res: Response) => {
+    const { getCharacterSheet } = useCases;
+
+    const id = req.params.id as UUID;
+
+    const sheet = getCharacterSheet.execute({ id: id as UUID });
+
+    res.status(200).send(sheet);
   });
 
   return router;
