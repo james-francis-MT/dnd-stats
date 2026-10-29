@@ -6,86 +6,72 @@ const ScoreNames = [
   "WISDOM",
   "CHARISMA",
 ] as const;
-export type ScoreNames = (typeof ScoreNames)[number];
+export type ScoreName = (typeof ScoreNames)[number];
 
 export class AbilityScores {
+  private scoreMap: Record<ScoreName, number>;
   constructor(
-    private strength: number,
-    private dexterity: number,
-    private constitution: number,
-    private intelligence: number,
-    private wisdom: number,
-    private charisma: number,
-  ) {}
+    strength: number,
+    dexterity: number,
+    constitution: number,
+    intelligence: number,
+    wisdom: number,
+    charisma: number,
+  ) {
+    this.scoreMap = {
+      STRENGTH: strength,
+      DEXTERITY: dexterity,
+      CONSTITUTION: constitution,
+      INTELLIGENCE: intelligence,
+      WISDOM: wisdom,
+      CHARISMA: charisma,
+    };
+  }
 
   static default() {
     return new AbilityScores(15, 13, 14, 10, 12, 8);
   }
 
-  equals(other: AbilityScores): boolean {
-    return (
-      this.strength === other.strength &&
-      this.dexterity === other.dexterity &&
-      this.constitution === other.constitution &&
-      this.intelligence === other.intelligence &&
-      this.wisdom === other.wisdom &&
-      this.charisma === other.charisma
-    );
+  get(name: ScoreName): { score: number; modifier: number } {
+    const score = this.scoreMap[name];
+    return { score, modifier: this.modifier(score) };
   }
 
   addScores(scoresToAdd: AbilityScores): AbilityScores {
     return new AbilityScores(
-      this.calculateNewScore(this.strength, scoresToAdd.strength),
-      this.calculateNewScore(this.dexterity, scoresToAdd.dexterity),
-      this.calculateNewScore(this.constitution, scoresToAdd.constitution),
-      this.calculateNewScore(this.intelligence, scoresToAdd.intelligence),
-      this.calculateNewScore(this.wisdom, scoresToAdd.wisdom),
-      this.calculateNewScore(this.charisma, scoresToAdd.charisma),
+      this.calculateNewScore(
+        this.scoreMap.STRENGTH,
+        scoresToAdd.scoreMap.STRENGTH,
+      ),
+      this.calculateNewScore(
+        this.scoreMap.DEXTERITY,
+        scoresToAdd.scoreMap.DEXTERITY,
+      ),
+      this.calculateNewScore(
+        this.scoreMap.CONSTITUTION,
+        scoresToAdd.scoreMap.CONSTITUTION,
+      ),
+      this.calculateNewScore(
+        this.scoreMap.INTELLIGENCE,
+        scoresToAdd.scoreMap.INTELLIGENCE,
+      ),
+      this.calculateNewScore(this.scoreMap.WISDOM, scoresToAdd.scoreMap.WISDOM),
+      this.calculateNewScore(
+        this.scoreMap.CHARISMA,
+        scoresToAdd.scoreMap.CHARISMA,
+      ),
     );
   }
 
-  toSheet(proficientScores: ScoreNames[]) {
-    return {
-      strength: this.getScore(
-        this.strength,
-        proficientScores.includes("STRENGTH"),
-      ),
-      dexterity: this.getScore(
-        this.dexterity,
-        proficientScores.includes("DEXTERITY"),
-      ),
-      constitution: this.getScore(
-        this.constitution,
-        proficientScores.includes("CONSTITUTION"),
-      ),
-      intelligence: this.getScore(
-        this.intelligence,
-        proficientScores.includes("INTELLIGENCE"),
-      ),
-      wisdom: this.getScore(this.wisdom, proficientScores.includes("WISDOM")),
-      charisma: this.getScore(
-        this.charisma,
-        proficientScores.includes("CHARISMA"),
-      ),
-    };
-  }
-
-  hitpoints(base: number): number {
-    return base + this.modifier(this.constitution);
-  }
-
-  armourClass(base: number): number {
-    return base + this.modifier(this.dexterity);
-  }
-
-  private getScore(score: number, proficient: boolean) {
-    const modifierValue = this.modifier(score);
-    return {
-      score: score,
-      modifier: modifierValue,
-      savingThrow: proficient ? modifierValue + 2 : modifierValue,
-      proficient: proficient,
-    };
+  equals(other: AbilityScores): boolean {
+    return (
+      this.scoreMap.STRENGTH === other.scoreMap.STRENGTH &&
+      this.scoreMap.DEXTERITY === other.scoreMap.DEXTERITY &&
+      this.scoreMap.CONSTITUTION === other.scoreMap.CONSTITUTION &&
+      this.scoreMap.INTELLIGENCE === other.scoreMap.INTELLIGENCE &&
+      this.scoreMap.WISDOM === other.scoreMap.WISDOM &&
+      this.scoreMap.CHARISMA === other.scoreMap.CHARISMA
+    );
   }
 
   private modifier(score: number): number {

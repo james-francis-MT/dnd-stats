@@ -1,11 +1,11 @@
-import { AbilityScores, ScoreNames } from "./abilityScores";
+import { AbilityScores, ScoreName } from "./abilityScores";
 
 export class Character {
   private name: string;
   private species: string;
   private characterClass: string;
   private level: number;
-  protected abilityScores: AbilityScores;
+  private readonly abilityScores: AbilityScores;
 
   constructor(
     name: string,
@@ -21,42 +21,63 @@ export class Character {
     this.abilityScores = scores || AbilityScores.default();
   }
 
-  sheet() {
+  basicInfo() {
     return {
       name: this.name,
       species: this.species,
       level: this.level,
       class: this.characterClass,
-      abilityScores: this.abilityScores.toSheet(this.proficiencies()),
-      hitpoints: this.abilityScores.hitpoints(this.hitDie()),
-      armourClass: this.abilityScores.armourClass(this.baseArmour()),
-      equipped: null,
-      weapons: [],
     };
   }
 
-  equals(other: Character): boolean {
-    return (
-      other.name === this.name && this.abilityScores.equals(other.abilityScores)
-    );
+  getStat(name: ScoreName): {
+    score: number;
+    modifier: number;
+    savingThrow: number;
+    proficient: boolean;
+  } {
+    const isProficient = this.proficiencies().includes(name);
+    const score = this.abilityScores.get(name);
+    const baseModifier = score.modifier;
+    const savingThrow = isProficient
+      ? baseModifier + this.proficiencyBonus()
+      : baseModifier;
+
+    return {
+      score: score.score,
+      modifier: score.modifier,
+      savingThrow: savingThrow,
+      proficient: isProficient,
+    };
   }
 
-  private proficiencies(): ScoreNames[] {
+  hitpoints(): number {
+    const conMod = this.abilityScores.get("CONSTITUTION").modifier;
+    return this.hitDie() + conMod;
+  }
+
+  private hitDie(): number {
+    return 10;
+  }
+
+  armourClass(): number {
+    return this.abilityScores.get("DEXTERITY").modifier + 10;
+  }
+
+  private proficiencies(): ScoreName[] {
     if (this.characterClass === "paladin") {
       return ["CHARISMA", "WISDOM"];
     }
     return [];
   }
 
-  private hitDie(): number {
-    if (this.characterClass === "paladin") {
-      return 10;
-    }
-
-    return 8;
+  private proficiencyBonus(): number {
+    return 2;
   }
 
-  private baseArmour(): number {
-    return 10;
+  equals(other: Character): boolean {
+    return (
+      other.name === this.name && this.abilityScores.equals(other.abilityScores)
+    );
   }
 }
