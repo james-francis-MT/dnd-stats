@@ -1,4 +1,4 @@
-import { AbilityScores } from "./abilityScores";
+import { AbilityScores, ScoreNames } from "./abilityScores";
 
 export class Character {
   private name: string;
@@ -22,12 +22,41 @@ export class Character {
   }
 
   sheet() {
-    return { name: this.name, species: this.species };
+    return {
+      name: this.name,
+      species: this.species,
+      level: this.level,
+      class: this.characterClass,
+      abilityScores: this.abilityScores.toSheet(this.proficiencies()),
+      hitpoints: this.abilityScores.hitpoints(this.hitDie()),
+      armourClass: this.abilityScores.armourClass(this.baseArmour()),
+      equipped: null,
+      weapons: [],
+    };
   }
 
   equals(other: Character): boolean {
     return (
       other.name === this.name && this.abilityScores.equals(other.abilityScores)
     );
+  }
+
+  private proficiencies(): ScoreNames[] {
+    if (this.characterClass === "paladin") {
+      return ["CHARISMA", "WISDOM"];
+    }
+    return [];
+  }
+
+  private hitDie(): number {
+    if (this.characterClass === "paladin") {
+      return 10;
+    }
+
+    return 8;
+  }
+
+  private baseArmour(): number {
+    return 10;
   }
 }
