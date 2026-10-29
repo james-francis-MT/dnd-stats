@@ -1,5 +1,6 @@
 import { InMemoryCharacterStore } from "../src/gateways/characterStore/inMemoryStore";
 import { CreateCharacter } from "../src/useCases/createCharacter";
+import { GetCharacterSheet } from "../src/useCases/getCharacterSheet";
 
 describe("create character", () => {
   const store = new InMemoryCharacterStore();
@@ -25,7 +26,8 @@ describe("create character", () => {
 
     const characterId = result.value.id;
 
-    const characterSheet = getCharacterSheet.execute({ id: characterId });
+    const characterSheet = getCharacterSheet.execute({ id: characterId }).value
+      .sheet;
 
     expect(characterSheet).toEqual({
       name: "test",
